@@ -13,7 +13,8 @@ class Titles extends Model
         'title',            //task time
         'description',      //task description
         'due_date',         //Due date
-        'attachment'        //file attachment
+        'attachment' ,       //file attachment
+        'status'
     ];
     public function tasks(){
         return $this->belongsTo(Task::class,'task_id');

@@ -88,6 +88,11 @@
                 <div class="px-6 py-2 mt-auto">
                     <p class="text-xs text-gray-500">{{ $task->updated_at->diffForHumans() }}</p>
                 </div>
+                @foreach($task->titles as $title)
+                <div class="px-6 py-2 mt-auto">
+                    <p class="text-xs text-gray-500">Status:{{$title->status}}</p>
+                </div>
+                @endforeach
             </div>
         @empty
             <p class="text-lg text-yellow-600">No tasks found</p>

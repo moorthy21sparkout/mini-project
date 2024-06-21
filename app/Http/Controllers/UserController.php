@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\UserTaskCreatedEvent;
 use App\Http\Requests\CreateTaskRequest;
 use App\Models\Task;
 use App\Models\Titles;
@@ -58,11 +59,14 @@ class UserController extends Controller
             }
             // Create Task using validated data and authenticated user's id
 
+            $userTask = Task::with('user')->get();
+            
             $task = Task::create([
 
                 'user_id' => Auth::id(),
                 'task' => $request->task,
             ]);
+
             Titles::create([
                 'task_id' => $task->id,
                 'title' => $request->title,
@@ -70,7 +74,6 @@ class UserController extends Controller
                 'due_date' => $request->due_date,
                 'attachment' => $request->attachment,
             ]);
-
 
             return redirect()->route('user_task.index')->with('success', 'Task created successfully!');
         } catch (\Exception $e) {
