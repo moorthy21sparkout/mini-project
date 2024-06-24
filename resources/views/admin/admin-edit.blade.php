@@ -8,7 +8,7 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <form action="{{ route('admin-update', $task->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        @method('PUT')
+                    
                         <div class="mb-4">
                             <label for="task" class="block text-gray-700">Task</label>
                             <input type="text" name="task" id="task" value="{{ $task->task }}"
@@ -55,3 +55,4 @@
         </div>
     </div>
 </x-app-layout>
+

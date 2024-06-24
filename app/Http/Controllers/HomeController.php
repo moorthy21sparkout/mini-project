@@ -11,14 +11,30 @@ class HomeController extends Controller
     {
         return view('welcome');
     }
+    // public function redirect()
+    // {
+    //     if (Auth::id()) {
+    //         if (Auth::user()->usertype == 'user'||Auth::user()->usertype == 'admin' ) {
+    //             return redirect('user_task');
+    //         } else {
+    //             return redirect()->route('admin-home');
+    //         }
+    //     }
+    // }
     public function redirect()
     {
-        if (Auth::id()) {
-            if (Auth::user()->usertype == 'user') {
-                return redirect('user_task');
-            } else {
-                return redirect()->route('admin-home');
+        if (Auth::check()) {
+            if (Auth::user()->usertype == 'admin') {
+                if (session('view_mode') == 'user') {
+                    return redirect()->route('user_task');
+                } else {
+                    return redirect()->route('admin-home');
+                }
+            } elseif (Auth::user()->usertype == 'user') {
+                return redirect()->route('user_task.index');
             }
         }
+
+        return redirect()->route('login');
     }
 }

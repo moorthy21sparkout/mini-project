@@ -26,8 +26,10 @@ class CreateTaskRequest extends FormRequest
         return [
             'task'=> 'required|string|max:255',
             'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'due_date' => 'nullable|date',
+            'description' => 'required|string',
+            'due_date' => 'required|date',
+            'datetime_field'=>'required',
+            'status' => 'required|string|max:255',
         ];
     }
     public function messages()

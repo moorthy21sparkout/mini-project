@@ -13,6 +13,7 @@ class Titles extends Model
         'title',            //task time
         'description',      //task description
         'due_date',         //Due date
+        'datetime_field',
         'attachment' ,       //file attachment
         'status'
     ];

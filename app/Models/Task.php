@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Events\UserTaskCreatedEvent;
+use App\Listeners\SendUserTaskCreatedNotification;
 use App\Notifications\UserTaskCreateNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -21,14 +22,7 @@ class Task extends Model
 
     public function titles()
     {
-        return $this->hasMany(Titles::class);
+        return $this->hasMany(Titles::class,'task_id');
     }
 
-    protected static function boot()
-    {
-        parent::boot();
-        static::created(function ($task) {
-            $task->user->notify(new UserTaskCreateNotification());
-        });
-    }
 }

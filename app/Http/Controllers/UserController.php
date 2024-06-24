@@ -46,23 +46,56 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateTaskRequest $request)
+    // public function store(CreateTaskRequest $request)
 
+    // {
+    //     try {
+    //         $validatedData = $request->validated();
+    //         // Handle file upload if attachment exists in the request
+    //         if ($request->hasFile('attachment')) {
+    //             $attachment = $request->file('attachment');
+    //             $filePath = $attachment->move('attachments', $attachment); // Store file in storage/app/public/attachments
+    //             $validatedData['attachment'] = $filePath; // Save file path to database
+    //         }
+    //         // Create Task using validated data and authenticated user's id
+
+    //         // $userTask = Task::with('user')->get();
+
+    //         $task = Task::create([
+
+    //             'user_id' => Auth::id(),
+    //             'task' => $request->task,
+    //         ]);
+
+    //         Titles::create([
+    //             'task_id' => $task->id,
+    //             'title' => $request->title,
+    //             'description' => $request->description,
+    //             'due_date' => $request->due_date,
+    //             'datetime_field'=>$request->datetime_field,
+    //             'attachment' => $request->attachment,
+    //         ]);
+
+    //         return redirect()->route('user_task.index')->with('success', 'Task created successfully!');
+    //     } catch (\Exception $e) {
+    //         // Log the error or handle it based on your application's needs
+    //         return back()->withInput()->withErrors(['error' => $e->getMessage()]);
+    //     }
+    // }
+    public function store(CreateTaskRequest $request)
     {
         try {
             $validatedData = $request->validated();
+
             // Handle file upload if attachment exists in the request
             if ($request->hasFile('attachment')) {
                 $attachment = $request->file('attachment');
-                $filePath = $attachment->move('attachments', $attachment); // Store file in storage/app/public/attachments
+                $filePath = $attachment->move('attachments', $attachment->getClientOriginalName()); // Store file in storage/app/public/attachments
                 $validatedData['attachment'] = $filePath; // Save file path to database
             }
+
             // Create Task using validated data and authenticated user's id
-
-            $userTask = Task::with('user')->get();
-            
             $task = Task::create([
-
                 'user_id' => Auth::id(),
                 'task' => $request->task,
             ]);
@@ -72,9 +105,10 @@ class UserController extends Controller
                 'title' => $request->title,
                 'description' => $request->description,
                 'due_date' => $request->due_date,
-                'attachment' => $request->attachment,
+                'datetime_field' => $request->datetime_field,
+                'attachment' => $validatedData['attachment'] ?? null,
+                'status' => $request->status,
             ]);
-
             return redirect()->route('user_task.index')->with('success', 'Task created successfully!');
         } catch (\Exception $e) {
             // Log the error or handle it based on your application's needs
@@ -122,6 +156,37 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    // public function update(CreateTaskRequest $request, $id)
+    // {
+    //     $task = Task::findOrFail($id);
+    //     if ($task->user_id != Auth::id()) {
+    //         return redirect()->route('user_task.index')->withErrors(['error' => 'You are not authorized to update this task']);
+    //     }
+
+    //     $validatedData = $request->validated();
+
+    //     if ($request->hasFile('attachment')) {
+    //         $attachment = $request->file('attachment');
+    //         $filePath = $attachment->move('attachments', $attachment->getClientOriginalName()); // Store file in storage/app/public/attachments
+    //         $validatedData['attachment'] = $filePath; // Save file path to database
+    //     }
+
+    //     $task->update([
+    //         'task' => $request->task,
+    //     ]);
+
+    //     $title = Titles::where('task_id', $task->id)->first();
+    //     // dd($request->status);
+    //     $title->update([
+    //         'title' => $request->title,
+    //         'description' => $request->description,
+    //         'due_date' => $request->due_date,
+    //         'attachment' => $validatedData['attachment'] ?? $title->attachment,
+    //         'status' => $request->input('status'),
+    //     ]);
+
+    //     return redirect()->route('user_task.index')->with('success', 'Task updated successfully!');
+    // }
     public function update(CreateTaskRequest $request, $id)
     {
         $task = Task::findOrFail($id);
@@ -142,11 +207,15 @@ class UserController extends Controller
         ]);
 
         $title = Titles::where('task_id', $task->id)->first();
+
+        // Update title details including status
         $title->update([
             'title' => $request->title,
             'description' => $request->description,
             'due_date' => $request->due_date,
-            'attachment' => $request->attachment ?? $title->attachment, // Keep existing attachment if not updated
+            'datetime_field' => $request->datetime_field,
+            'attachment' => $validatedData['attachment'] ?? $title->attachment,
+            'status' => $request->input('status'),
         ]);
 
         return redirect()->route('user_task.index')->with('success', 'Task updated successfully!');

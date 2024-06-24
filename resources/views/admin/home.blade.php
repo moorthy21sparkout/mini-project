@@ -19,22 +19,14 @@
             </div>
             <div class="flex flex-col flex-1 overflow-y-auto">
                 <nav class="flex-1 px-2 py-4 bg-gray-800">
-                    <a href="" class="flex items-center px-4 py-2 text-gray-100 hover:bg-gray-700">
+                    <a href="{{ route('admin-assignTask') }}"
+                        class="flex items-center px-4 py-2 text-gray-100 hover:bg-gray-700">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
                             stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
-                        E-mail
-                    </a>
-                    <a href="{{ route('admin.notifications') }}"
-                        class="flex items-center px-4 py-2 mt-2 text-gray-100 hover:bg-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                            stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                        Notification
+                        Assign
                     </a>
                     <a href="{{ route('admin-create') }}"
                         class="flex items-center px-4 py-2 mt-2 text-gray-100 hover:bg-gray-700">
@@ -43,7 +35,16 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M13 10V3L4 14h7v7l9-11h-7z" />
                         </svg>
-                        Create & Asign
+                        Create
+                    </a>
+                    <a href="{{ route('user_task.index') }}"
+                        class="flex items-center px-4 py-2 mt-2 text-gray-100 hover:bg-gray-700">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                        Your Task
                     </a>
                 </nav>
             </div>
@@ -54,10 +55,12 @@
             <div class="flex items-center justify-between h-16 bg-white border-b border-gray-200">
                 <div class="flex items-center px-4">
 
-                    <input class="mx-4 w-full border rounded-md px-4 py-2" type="text" placeholder="Search">
+                    <strong class="text-blue-400">All User's Task List</strong>
                 </div>
+
                 <div class="flex items-center pr-4">
-                    <form action="{{ route('logout') }}" method="post">@csrf
+                    <form action="{{ route('logout') }}" method="post">
+                        @csrf
                         <button type="submit"
                             class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
                             Log-out
@@ -66,8 +69,11 @@
                 </div>
             </div>
 
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="note-container">
+            <!-- Display Success Message -->
+            <x-alert-success>
+                {{ session('success') }}
+            </x-alert-success>
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3" id="note-container">
                 @forelse ($tasks as $task)
                     <div class="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm">
                         <div class="px-6 py-4">
@@ -96,14 +102,20 @@
                                 <p class="text-xs text-gray-500">Status:{{ $title->status }}</p>
                             </div>
                         @endforeach
+
                     </div>
+
                 @empty
                     <p class="text-lg text-yellow-600">No tasks found</p>
                 @endforelse
+
+            </div>
+            <!-- Pagination Links -->
+            <div class=" px-4 py-6 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                {{ $tasks->links() }}
             </div>
 
         </div>
-
 </body>
 
 </html>

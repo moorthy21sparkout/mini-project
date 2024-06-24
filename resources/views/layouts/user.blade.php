@@ -43,16 +43,6 @@
 
                     </li>
                     <li>
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            <a href="{{ route('user-notification') }}" class="text-white">Notification</a>
-                        </button>
-                        
-                    <li>
-                        <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                            <a href="{{ route('user-email') }}" class="text-white">E-mails</a>
-                        </button>
-                    </li>
-                    <li>
                         <form action="{{ route('logout') }}" method="post">@csrf
                             <button type="submit"
                                 class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
@@ -69,6 +59,7 @@
     </x-alert-success>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="note-container">
         @forelse ($tasks as $task)
+
             <div class="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm">
                 <div class="px-6 py-4">
                     <div class="flex items-center justify-between mb-2">
@@ -88,10 +79,10 @@
                 <div class="px-6 py-2 mt-auto">
                     <p class="text-xs text-gray-500">{{ $task->updated_at->diffForHumans() }}</p>
                 </div>
-                @foreach($task->titles as $title)
-                <div class="px-6 py-2 mt-auto">
-                    <p class="text-xs text-gray-500">Status:{{$title->status}}</p>
-                </div>
+                @foreach ($task->titles as $title)
+                    <div class="px-6 py-2 mt-auto">
+                        <p class="text-xs text-gray-500">Status:{{ $title->status }}</p>
+                    </div>
                 @endforeach
             </div>
         @empty

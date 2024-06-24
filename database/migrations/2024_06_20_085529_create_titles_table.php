@@ -19,8 +19,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->date('due_date');
+            $table->dateTime('datetime_field');
             $table->string('attachment')->nullable();
-            $table->enum('status', ['To-do🖌️', 'in-progress🟠', 'completed ✅'])->default('To-do🖌️');
+            $table->string('status');
             $table->foreign('task_id')->references('id')->on('tasks')->onDelete('cascade');
             $table->timestamps();
         });

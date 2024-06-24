@@ -36,9 +36,16 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+
+require __DIR__ . '/auth.php';
+
+
 Route::middleware('auth')->group(function () {
     Route::resource('user_task', UserController::class);
 });
+
+
+
 
 Route::get('admin-home', [AdminController::class, 'index'])->name('admin-home');
 
@@ -48,18 +55,15 @@ Route::post('admin-store', [AdminController::class, 'store'])->name('admin-store
 
 Route::get('admin-show/{id}', [AdminController::class, 'show'])->name('admin-show');
 
+Route::get('admin-edit/{id}', [AdminController::class, 'edit'])->name('admin-edit');
 
-Route::patch('admin-edit', [AdminController::class, 'edit'])->name('admin-edit');
+Route::post('admin-update/{id}', [AdminController::class, 'update'])->name('admin-update');
 
-Route::patch('admin-update', [AdminController::class, 'update'])->name('admin-update');
+Route::delete('admin-delete/{id}', [AdminController::class, 'destroy'])->name('admin-delete');
 
+Route::get('admin-notification', [AdminController::class, 'adminNotifications'])->name('admin.notifications');
 
-Route::middleware(['auth'])->group(function () {
-    // Routes requiring authentication
-    Route::get('admin-notification', [AdminController::class, 'notifications'])->name('admin.notifications');
-});
-Route::view('notify', 'user.notification')->name('user-notification');
+Route::get('admin-assign', [AdminController::class, 'assignTask'])->name('admin-assignTask');
 
-Route::view('e-mail', 'user.e-mail')->name('user-email');
+Route::post('admin-assign/{id}', [AdminController::class, 'assign'])->name('admin.assign');
 
-require __DIR__ . '/auth.php';
