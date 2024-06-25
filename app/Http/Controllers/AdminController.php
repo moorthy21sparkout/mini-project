@@ -16,15 +16,24 @@ use Notifications\UserTaskCreateNotification;
 
 class AdminController extends Controller
 {
+    /**
+     * Display a listing of tasks.
+     * 
+     * @return \Illuminate\View\View
+     */
     public function index()
     {
         // Fetch all tasks
         $tasks = Task::with('titles')->paginate(8);
         // Pass tasks to the view
 
-        return view('admin.home', compact('tasks'));
+        return view('admin.admin-home', compact('tasks'));
     }
-
+    /**
+     * Show the form for creating a new task.
+     * 
+     * @return \Illuminate\Create\Create
+     */
 
     public function create()
     {
@@ -32,7 +41,12 @@ class AdminController extends Controller
         return view('admin.admin-create', compact('users'));
     }
 
-
+    /**
+     * Store a newly created task in storage.
+     * 
+     * @param  \App\Http\Requests\CreateTaskRequest  $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
 
     public function store(CreateTaskRequest $request)
     {
@@ -104,12 +118,17 @@ class AdminController extends Controller
     //         return back()->withInput()->withErrors(['error' => $e->getMessage()]);
     //     }
     // }
-
+    /**
+     * Display the specified task.
+     * 
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
 
     public function show($id)
     {
         $userTask = Task::with('titles')->findOrFail($id);
-        // dd($userTask);
+        
         if ($userTask === null) {
             abort(404, 'Task not found');
         }
@@ -117,7 +136,12 @@ class AdminController extends Controller
         Log::info('Retrieved task:', ['task' => $userTask]);
         return view('admin.admin-show')->with('userTask', $userTask);
     }
-
+    /**
+     * Show the form for editing the specified task.
+     * 
+     * @param  int  $id
+     * @return \Illuminate\View\View
+     */
     public function edit($id)
     {
 
@@ -127,6 +151,13 @@ class AdminController extends Controller
             return view('admin.admin-edit')->with('task', $task);
         }
     }
+    /**
+     * Update the specified task in storage.
+     * 
+     * @param  \App\Http\Requests\CreateTaskRequest  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
 
     public function update(CreateTaskRequest $request, $id)
     {
@@ -157,11 +188,18 @@ class AdminController extends Controller
             'title' => $validatedData['title'],
             'description' => $validatedData['description'],
             'due_date' => $validatedData['due_date'],
+            'datetime_field' => $request->datetime_field,
             'attachment' => $validatedData['attachment'] ?? $title->attachment, // Keep existing attachment if not updated
         ]);
 
         return redirect()->route('admin-home')->with('success', 'Task updated successfully!');
     }
+    /**
+     * Remove the specified task from storage.
+     * 
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
 
     public function destroy($id)
     {
@@ -171,14 +209,12 @@ class AdminController extends Controller
 
         return redirect()->route('admin-home')->with('success', 'Task deleted successfully');
     }
-
-
-    public function adminNotifications()
-    {
-        $notifications = Auth::user()->notifications;
-
-        return view('admin.admin-notification', compact('notifications'));
-    }
+    
+    /**
+     * Show the form for assigning a task to a user.
+     * 
+     * @return \Illuminate\View\View
+     */
     public function assignTask()
     {
         $tasks = Task::with('titles')->get();
@@ -186,6 +222,14 @@ class AdminController extends Controller
         $titles = Titles::all(); // Fetch all titles
         return view('admin.admin-assign', compact('tasks', 'users'));
     }
+
+    /**
+     * Assign the specified task to a user.
+     * 
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\RedirectResponse
+     */
 
     public function assign(Request $request, $id)
     {

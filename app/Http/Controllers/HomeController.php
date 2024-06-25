@@ -11,30 +11,24 @@ class HomeController extends Controller
     {
         return view('welcome');
     }
-    // public function redirect()
-    // {
-    //     if (Auth::id()) {
-    //         if (Auth::user()->usertype == 'user'||Auth::user()->usertype == 'admin' ) {
-    //             return redirect('user_task');
-    //         } else {
-    //             return redirect()->route('admin-home');
-    //         }
-    //     }
-    // }
     public function redirect()
     {
+        // Check if the user is authenticated
         if (Auth::check()) {
             if (Auth::user()->usertype == 'admin') {
                 if (session('view_mode') == 'user') {
+
                     return redirect()->route('user_task');
                 } else {
+                    // Redirect to the admin home page if view mode is not set or set to other than 'user'
                     return redirect()->route('admin-home');
                 }
             } elseif (Auth::user()->usertype == 'user') {
+                // Redirect to the user task index if the authenticated user is not an admin
                 return redirect()->route('user_task.index');
             }
         }
-
+        // Redirect to the login page if the user is not authenticated
         return redirect()->route('login');
     }
 }

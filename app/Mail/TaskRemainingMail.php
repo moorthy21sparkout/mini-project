@@ -9,9 +9,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Log;
 
-class TaskUpdatedMail extends Mailable
+class TaskRemainingMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -21,13 +20,10 @@ class TaskUpdatedMail extends Mailable
      * @return void
      */
     protected $task;
-    protected $message;
-    public function __construct(Task $task, $message)
+    public function __construct(Task $task)
     {
         //
-
         $this->task = $task;
-        $this->message = $message;
     }
 
     /**
@@ -38,26 +34,23 @@ class TaskUpdatedMail extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Task Updated Mail',
+            subject: 'Task Remaining Mail',
         );
     }
 
     /**
-     * Get the message content definition.
+     * Get the message build definition.
      *
-     * @return \Illuminate\Mail\Mailables\Content
+     * @return \Illuminate\Mail\Mailables\build
      */
-    public function content()
+    public function build()
     {
-        Log::info('Message content: ' . print_r($this->message, true));
-        $this->message = (string) $this->message;
-        return new Content(
 
-            view: 'mail.updated',
-            with: [
-                'data' => $this->message,
-            ],
-        );
+        return $this->subject('Task Remaining Mail')
+            ->view('mail.remainder')
+            ->with([
+                'task' => $this->task, // Pass 'task' instead of 'data'
+            ]);
     }
 
     /**

@@ -6,7 +6,6 @@
                     <div class="mb-4">
                         <h2 class="text-lg font-semibold">Assign Tasks</h2>
                     </div>
-                    <!-- Table section -->
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-50">
@@ -58,7 +57,6 @@
                                             </form>
                                         </td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                            <!-- Additional actions if needed -->
                                         </td>
                                     </tr>
                                 @endforeach

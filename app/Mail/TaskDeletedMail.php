@@ -12,7 +12,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 
-class TaskDeletedMail extends Mailable implements ShouldQueue
+class TaskDeletedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -22,14 +22,13 @@ class TaskDeletedMail extends Mailable implements ShouldQueue
      * @return void
      */
     protected $task;
-    protected $message;
-    public function __construct(Task $task,$message)
+    public $message;
+    public function __construct(Task $task, $message)
     {
-        //
-        dd('ammu');
-        $this->task=$task;
-        $this->message=$message;
+        $this->task = $task;
+        $this->message =  $message;
     }
+
 
     /**
      * Get the message envelope.
@@ -54,13 +53,12 @@ class TaskDeletedMail extends Mailable implements ShouldQueue
         $this->message = (string) $this->message;
         return new Content(
 
-            view: 'mail.created',
+            view: 'mail.deleted',
             with: [
                 'data' => $this->message,
             ],
         );
     }
-
     /**
      * Get the attachments for the message.
      *

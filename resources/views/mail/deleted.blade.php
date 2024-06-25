@@ -7,7 +7,7 @@
 </head>
 
 <body>
-    <h2>New Task Created</h2>
+    <h2>New Task Deleted</h2>
     <p>Hello Admin,</p>
     <p>{{ $data }}</p>
     <p>Thank you!</p>

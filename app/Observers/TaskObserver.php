@@ -6,6 +6,7 @@ use App\Jobs\TaskCreated;
 use App\Jobs\TaskDeleted;
 use App\Jobs\TaskUpdated;
 use App\Models\Task;
+use App\Models\Titles;
 use App\Models\User;
 
 use Illuminate\Support\Facades\Log;
@@ -41,18 +42,12 @@ class TaskObserver
      * @return void
      */
     public function updated(Task $task)
-
     {
         $admin = User::where('usertype', 'admin')->first();
-        $user = User::where('usertype', 'user')->first();
         $message = 'Task "' . $task->task . '" is updated by ' . $task->user->name;
 
         if ($admin) {
             dispatch(new TaskUpdated($task, $admin, $message));
-        }
-        
-        if ($user) {
-            dispatch(new TaskUpdated($task, $user, $message));
         }
     }
 
@@ -65,18 +60,11 @@ class TaskObserver
     public function deleted(Task $task)
     {
         $admin = User::where('usertype', 'admin')->first();
-        $user = User::where('usertype', 'user')->first();
-
         $message = 'Task "' . $task->task . '" is deleted by ' . $task->user->name;
 
         if ($admin) {
             dispatch(new TaskDeleted($task, $admin, $message));
         }
-
-        if ($user) {
-            dispatch(new TaskDeleted($task, $user, $message));
-        }
-        
     }
 
     /**

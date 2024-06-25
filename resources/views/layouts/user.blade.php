@@ -64,7 +64,7 @@
                 <div class="px-6 py-4">
                     <div class="flex items-center justify-between mb-2">
                         <h2 class="text-lg font-semibold text-blue-800">
-                            <a href="{{ route('user_task.show', $task) }}">{{ $task->task }}</a>
+                            <a href="{{ route('user_task.show', $task) }}" class="flex gap-2">Task:<pre>{{ $task->task }}</pre></a>
                         </h2>
                     </div>
                     @foreach ($task->titles as $title)

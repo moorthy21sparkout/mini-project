@@ -1,1 +1,0 @@
-<h2>welcome to the notification box</h2>

@@ -1,10 +1,6 @@
 <?php
 
 namespace App\Models;
-
-use App\Events\UserTaskCreatedEvent;
-use App\Listeners\SendUserTaskCreatedNotification;
-use App\Notifications\UserTaskCreateNotification;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 

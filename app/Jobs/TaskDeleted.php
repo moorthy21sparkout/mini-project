@@ -28,6 +28,7 @@ class TaskDeleted implements ShouldQueue
     public function __construct(Task $task, User $admin,$message)
     {
         
+        
         $this->task = $task;
         $this->admin = $admin;
         $this->message =$message;
@@ -41,7 +42,7 @@ class TaskDeleted implements ShouldQueue
     public function handle()
     {
         //
-        dd('hi');
+        
         Mail::to($this->admin->email)->send(new TaskDeletedMail($this->task, $this->message));
     }
 }

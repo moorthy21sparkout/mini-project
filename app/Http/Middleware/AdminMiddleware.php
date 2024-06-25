@@ -17,15 +17,11 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        {
-            // Check if the authenticated user is an admin
-            if (Auth::check() && Auth::user()->usertype === 'admin') {
-                return $next($request); // Proceed with the request
-            }
-    
-            // If not admin, redirect or abort as needed
-            abort(403, 'Unauthorized action.'); // Or redirect to a different route
+        // Check if the user is authenticated and if their usertype is 'admin'
+        if (!Auth::check() || Auth::user()->usertype !== 'admin') {
+            return redirect('/'); // or any other path for unauthorized users
         }
+
         return $next($request);
     }
 }

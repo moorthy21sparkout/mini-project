@@ -46,6 +46,7 @@
             <div class="mb-4">
                 <label for="datetime_field" class="block text-sm font-medium text-gray-700">Datetime</label>
                 <input type="datetime-local" name="datetime_field" id="datetime_field"
+                    value="{{ $task->titles->first()->datetime_field}}"
                     class="mt-1 block w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
                 @error('datetime_field')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -66,7 +67,8 @@
                     <option value="in-progress 🟠"
                         {{ $task->titles->first()->status == 'in-progress 🟠' ? 'selected' : '' }}>In-progress 🟠
                     </option>
-                    <option value="completed ✅" {{ $task->titles->first()->status == 'completed ✅' ? 'selected' : '' }}>
+                    <option value="completed ✅"
+                        {{ $task->titles->first()->status == 'completed ✅' ? 'selected' : '' }}>
                         Completed ✅</option>
 
                 </select>

@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Mail\TaskRemainingMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -23,7 +24,7 @@ class RemainingTime implements ShouldQueue
     public function __construct($task)
     {
         //
-        $this->task=$task;
+        $this->task = $task;
     }
 
     /**
@@ -33,14 +34,10 @@ class RemainingTime implements ShouldQueue
      */
     public function handle()
     {
+
         $assignedUser = $this->task->user;
 
         // Send email reminder
-        Mail::send('emails.task_reminder', ['task' => $this->task], function ($message) use ($assignedUser) {
-            $message->to($assignedUser->email, $assignedUser->name)
-                    ->subject('Reminder: Task Due Soon');
-        });
+        Mail::to($assignedUser->email)->send(new TaskRemainingMail($this->task->user));
     }
-
-    
 }

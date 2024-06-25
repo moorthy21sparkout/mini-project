@@ -1,1 +1,0 @@
-<h2>welcome to the e-mail notification</h2>

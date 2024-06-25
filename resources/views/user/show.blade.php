@@ -51,7 +51,15 @@
                                         <strong>Description: </strong>{{ $title->description }}</a>
                                     </h2>
                                 </div>
-
+                                @if ($title->attachment)
+                                    <div class="mt-4">
+                                        <strong>Attachment:</strong>
+                                        <a href="{{ asset($title->attachment) }}" target="_blank"
+                                            class="text-blue-600 hover:text-blue-800 ">
+                                            View 
+                                        </a>
+                                    </div>
+                                @endif
                             </div>
                         </div>
                 @endforeach

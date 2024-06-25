@@ -19,9 +19,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/home', [HomeController::class, 'redirect']);
@@ -39,31 +36,23 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-
+//User Controller
 Route::middleware('auth')->group(function () {
+
     Route::resource('user_task', UserController::class);
 });
 
 
 
-
-Route::get('admin-home', [AdminController::class, 'index'])->name('admin-home');
-
-Route::get('admin-create', [AdminController::class, 'create'])->name('admin-create');
-
-Route::post('admin-store', [AdminController::class, 'store'])->name('admin-store');
-
-Route::get('admin-show/{id}', [AdminController::class, 'show'])->name('admin-show');
-
-Route::get('admin-edit/{id}', [AdminController::class, 'edit'])->name('admin-edit');
-
-Route::post('admin-update/{id}', [AdminController::class, 'update'])->name('admin-update');
-
-Route::delete('admin-delete/{id}', [AdminController::class, 'destroy'])->name('admin-delete');
-
-Route::get('admin-notification', [AdminController::class, 'adminNotifications'])->name('admin.notifications');
-
-Route::get('admin-assign', [AdminController::class, 'assignTask'])->name('admin-assignTask');
-
-Route::post('admin-assign/{id}', [AdminController::class, 'assign'])->name('admin.assign');
-
+// Admin Controller
+Route::middleware(['admin'])->prefix('admin')->group(function () {
+    Route::get('home', [AdminController::class, 'index'])->name('admin-home');
+    Route::get('create', [AdminController::class, 'create'])->name('admin-create');
+    Route::post('store', [AdminController::class, 'store'])->name('admin-store');
+    Route::get('show/{id}', [AdminController::class, 'show'])->name('admin-show');
+    Route::get('edit/{id}', [AdminController::class, 'edit'])->name('admin-edit');
+    Route::post('update/{id}', [AdminController::class, 'update'])->name('admin-update');
+    Route::delete('delete/{id}', [AdminController::class, 'destroy'])->name('admin-delete');
+    Route::get('assign', [AdminController::class, 'assignTask'])->name('admin-assignTask');
+    Route::post('assign/{id}', [AdminController::class, 'assign'])->name('admin.assign');
+});

@@ -8,27 +8,48 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <form action="{{ route('admin-update', $task->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                    
+
                         <div class="mb-4">
                             <label for="task" class="block text-gray-700">Task</label>
                             <input type="text" name="task" id="task" value="{{ $task->task }}"
                                 class="w-full mt-1 p-2 border border-gray-300 rounded">
+                            @error('task')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-4">
                             <label for="title" class="block text-gray-700">Title</label>
                             <input type="text" name="title" id="title"
                                 value="{{ $task->titles->first()->title }}"
                                 class="w-full mt-1 p-2 border border-gray-300 rounded">
+                            @error('title')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-4">
                             <label for="description" class="block text-gray-700">Description</label>
                             <textarea name="description" id="description" class="w-full mt-1 p-2 border border-gray-300 rounded">{{ $task->titles->first()->description }}</textarea>
+                            @error('description')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-4">
                             <label for="due_date" class="block text-gray-700">Due Date</label>
                             <input type="date" name="due_date" id="due_date"
                                 value="{{ $task->titles->first()->due_date }}"
                                 class="w-full mt-1 p-2 border border-gray-300 rounded">
+                            @error('due_date')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                        <div class="mb-4">
+                            <label for="datetime_field" class="block text-sm font-medium text-gray-700">Datetime</label>
+                            <input type="datetime-local" name="datetime_field" id="datetime_field"
+                                value="{{ $task->titles->first()->datetime_field }}"
+                                class="mt-1 block w-full px-3 py-2 border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            @error('datetime_field')
+                                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                            @enderror
                         </div>
                         <div class="mb-4">
                             <label for="attachment" class="block text-gray-700">Attachment</label>
@@ -55,4 +76,3 @@
         </div>
     </div>
 </x-app-layout>
-

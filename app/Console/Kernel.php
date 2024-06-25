@@ -2,12 +2,15 @@
 
 namespace App\Console;
 
+use App\Console\Commands\SendRemainMail;
 use App\Jobs\RemainingTime;
+use App\Mail\TaskRemainingMail;
 use App\Models\Task;
 use App\Models\Titles;
 use App\Models\User;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Cache;
 
 class Kernel extends ConsoleKernel
 {
@@ -17,21 +20,13 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+    protected $commands=[
+      SendRemainMail::class,  
+    ];     
+    
     protected function schedule(Schedule $schedule)
     {
-        $schedule->call(function () {
-            // Fetch tasks due within the next hour
-            $tasksDueSoon = Task::whereBetween('due_date', [now(), now()->addHour()])
-                ->whereNull('reminder_sent_at')
-                ->get();
-
-            foreach ($tasksDueSoon as $task) {
-                    RemainingTime::dispatch($task);
-
-                // Update task to mark reminder sent to avoid sending multiple reminders
-                $task->update(['reminder_sent_at' => now()]);
-            }
-        })->everyMinute(); // Run this job hourly or adjust as per your requirement
+            $schedule->command('send:mail')->daily();
     }
 
 
