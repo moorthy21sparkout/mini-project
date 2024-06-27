@@ -82,7 +82,7 @@
             <div class="mb-4">
                 <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
                 <select name="status" id="status"
-                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black">
+                    class="mt-1 block w-full border-gray-300 rounded-md shadow-sm  px-3 py-2 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm text-black">
                     <option value="To-do 🖌️">To-do 🖌️</option>
                     <option value="in-progress 🟠">In-progress 🟠</option>
                     <option value="completed ✅">Completed ✅</option>

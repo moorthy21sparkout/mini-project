@@ -31,10 +31,6 @@
                 <ul
                     class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
                     <li>
-                        {{-- <a href="{{ route('user_task.create') }}"
-                            class="block py-2 px-3 text-gray-900 bg-white-500 hover:bg-green-700 text-white rounded md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                            aria-current="page">Create new +
-                        </a> --}}
                         <a href="{{ route('user_task.create') }}">
                             <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
                                 create new
@@ -60,34 +56,35 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" id="note-container">
         @forelse ($tasks as $task)
 
-            <div class="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm">
-                <div class="px-6 py-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <h2 class="text-lg font-semibold text-blue-800">
-                            <a href="{{ route('user_task.show', $task) }}" class="flex gap-2">Task:<pre>{{ $task->task }}</pre></a>
-                        </h2>
-                    </div>
-                    @foreach ($task->titles as $title)
-                        <div class="flex items-center justify-between mb-2">
-                            <h4 class="text-sm text-gray-800">
-                                <a href="#">{{ $title->title }}</a>
-                            </h4>
-                        </div>
-                        <p class="text-gray-700">{{ Str::limit($title->description, 150) }}</p>
-                    @endforeach
-                </div>
-                <div class="px-6 py-2 mt-auto">
-                    <p class="text-xs text-gray-500">{{ $task->updated_at->diffForHumans() }}</p>
-                </div>
-                @foreach ($task->titles as $title)
-                    <div class="px-6 py-2 mt-auto">
-                        <p class="text-xs text-gray-500">Status:{{ $title->status }}</p>
-                    </div>
-                @endforeach
-            </div>
-        @empty
-            <p class="text-lg text-yellow-600">No tasks found</p>
-        @endforelse
+                                <div class="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm">
+                                    <div class="px-6 py-4">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <h2 class="text-lg font-semibold text-blue-800">
+                                                <a href="{{ route('user_task.show', $task) }}" class="flex gap-2">Task:
+                                                    <pre>{{ $task->task }}</pre>
+                                                </a>
+                                            </h2>
+                                        </div>
+                            @foreach ($task->titles as $title)
+                                            <div class="flex items-center justify-between mb-2">
+                                                <h4 class="text-sm text-gray-800">
+                                                    {{ $title->title }}
+                                                </h4>
+                                            </div>
+                                            <p class="text-gray-700">{{ Str::limit($title->description, 150) }}</p>
+
+                                    </div>
+                                    <div class="px-6 py-2 mt-auto">
+                                        <p class="text-xs text-gray-500">{{ $task->updated_at->diffForHumans() }}</p>
+                                    </div>
+                                    <div class="px-6 py-2 mt-auto">
+                                        <p class="text-xs text-gray-500">Status:{{ $title->status }}</p>
+                                    </div>
+                            @endforeach
+    </div>
+@empty
+    <p class="text-lg text-yellow-600">No tasks found</p>
+    @endforelse
     </div>
 
 

@@ -57,7 +57,7 @@ class TaskObserver
      * @param  \App\Models\Task  $task
      * @return void
      */
-    public function deleted(Task $task)
+    public function deleting(Task $task)
     {
         $admin = User::where('usertype', 'admin')->first();
         $message = 'Task "' . $task->task . '" is deleted by ' . $task->user->name;

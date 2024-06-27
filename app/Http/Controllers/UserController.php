@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UserTaskCreatedEvent;
+
 use App\Http\Requests\CreateTaskRequest;
 use App\Models\Task;
 use App\Models\Titles;
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
@@ -75,7 +73,6 @@ class UserController extends Controller
             ]);
             return redirect()->route('user_task.index')->with('success', 'Task created successfully!');
         } catch (\Exception $e) {
-            // Log the error or handle it based on your application's needs
             return back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
     }

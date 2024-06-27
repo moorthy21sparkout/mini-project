@@ -22,11 +22,13 @@ class TaskDeletedMail extends Mailable
      * @return void
      */
     protected $task;
+    protected $admin;
     public $message;
-    public function __construct(Task $task, $message)
-    {
+    public function __construct(Task $task,User $admin, $message)
+    {  
         $this->task = $task;
         $this->message =  $message;
+        $this->admin=$admin;
     }
 
 
@@ -49,6 +51,7 @@ class TaskDeletedMail extends Mailable
      */
     public function content()
     {
+        dd('hiiiiii');
         Log::info('Message content: ' . print_r($this->message, true));
         $this->message = (string) $this->message;
         return new Content(

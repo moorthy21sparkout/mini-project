@@ -2,17 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\UserTaskCreatedEvent;
+
 use App\Http\Requests\CreateTaskRequest;
 use App\Models\Task;
 use App\Models\Titles;
 use App\Models\User;
-use App\Notifications\UserTaskCreateNotification as NotificationsUserTaskCreateNotification;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\Notification as NotificationsNotification;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
-use Notifications\UserTaskCreateNotification;
+
 
 class AdminController extends Controller
 {
@@ -24,15 +22,15 @@ class AdminController extends Controller
     public function index()
     {
         // Fetch all tasks
-        $tasks = Task::with('titles')->paginate(8);
-        // Pass tasks to the view
+        $tasks = Task::with('titles')->latest('updated_at')->paginate(8);
 
+        // Pass tasks to the view
         return view('admin.admin-home', compact('tasks'));
     }
     /**
      * Show the form for creating a new task.
      * 
-     * @return \Illuminate\Create\Create
+     * @return \Illuminate\View\View
      */
 
     public function create()
@@ -86,38 +84,7 @@ class AdminController extends Controller
             return back()->withInput()->withErrors(['error' => $e->getMessage()]);
         }
     }
-    //     public function store(CreateTaskRequest $request)
-    // {
-    //     try {
-    //         $validatedData = $request->validated();
 
-    //         // Handle file upload if attachment exists in the request
-    //         if ($request->hasFile('attachment')) {
-    //             $attachment = $request->file('attachment');
-    //             $filePath = $attachment->store('attachments', 'public'); // Store file in storage/app/public/attachments
-    //             $validatedData['attachment'] = $filePath; // Save file path to database
-    //         }
-
-    //         // Create Task using validated data and authenticated user's id
-    //         $task = Task::create([
-    //             'user_id' => $request->user_id, // Assign the task to the selected user
-    //             'task' => $validatedData['task'],
-    //         ]);
-
-    //         Titles::create([
-    //             'task_id' => $task->id,
-    //             'title' => $validatedData['title'],
-    //             'description' => $validatedData['description'],
-    //             'due_date' => $validatedData['due_date'],
-    //             'attachment' => $validatedData['attachment'] ?? null,
-    //         ]);
-
-    //         return redirect()->route('admin-home')->with('success', 'Task created successfully!');
-    //     } catch (\Exception $e) {
-    //         // Log the error or handle it based on your application's needs
-    //         return back()->withInput()->withErrors(['error' => $e->getMessage()]);
-    //     }
-    // }
     /**
      * Display the specified task.
      * 
@@ -128,7 +95,7 @@ class AdminController extends Controller
     public function show($id)
     {
         $userTask = Task::with('titles')->findOrFail($id);
-        
+
         if ($userTask === null) {
             abort(404, 'Task not found');
         }
@@ -209,7 +176,7 @@ class AdminController extends Controller
 
         return redirect()->route('admin-home')->with('success', 'Task deleted successfully');
     }
-    
+
     /**
      * Show the form for assigning a task to a user.
      * 
@@ -238,5 +205,10 @@ class AdminController extends Controller
         $task->save();
 
         return redirect()->route('admin-home')->with('success', 'Task assigned successfully!');
+    }
+
+    public function search(Request $request){
+        $task=Task::where('task','Like','%'.$request->search.'%')->get();
+        return response()->json($task);
     }
 }

@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="bg-gray-100">
@@ -56,6 +58,14 @@
                 <div class="flex items-center px-4">
 
                     <strong class="text-blue-400">All User's Task List</strong>
+                    <form id="searchForm" class="ml-4">
+                        <input type="text" id="search" class="bg-gray-100 p-2 rounded border"
+                            placeholder="Search tasks">
+                        <button type="submit"
+                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">
+                            Search
+                        </button>
+                    </form>
                 </div>
 
                 <div class="flex items-center pr-4">
@@ -77,34 +87,44 @@
                 @forelse ($tasks as $task)
                     <div class="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm">
                         <div class="px-6 py-4">
-                            <div class="flex items-center justify-between mb-2">
-                                <h2 class="text-lg font-semibold text-blue-800">
+                            <div class="flex items-center justify-between mb-2 ">
+                                <h2 class="text-lg font-semibold text-blue-800 hover:underline ">
                                     <a href="{{ route('admin-show', ['id' => $task->id]) }}"
-                                        class="text-lg font-semibold text-blue-800 flex gap-2">
-                                       Task: <pre>{{ $task->task }}</pre>
+                                        class="text-lg font-semibold text-blue-500 flex gap-2">
+                                        Task:
+                                        <pre>{{ $task->task }}</pre>
                                     </a>
                                 </h2>
+                            </div>
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="text-lg font-semibold text-gray-600">
+                                    User: {{ $task->user->name }}
+                                </h4>
                             </div>
                             @foreach ($task->titles as $title)
                                 <div class="flex items-center justify-between mb-2">
                                     <h4 class="text-sm text-gray-800">
-                                        <a href="#">{{ $title->title }}</a>
+                                        <a href="#"><span class="text-gray-900">Titles:
+                                            </span>{{ $title->title }}</a>
                                     </h4>
                                 </div>
-                                <p class="text-gray-700">{{ Str::limit($title->description, 20) }}</p>
+                                <p class="text-gray-700"><span class="text-red-800">Description:
+                                    </span>{{ Str::limit($title->description, 20) }}
+                                </p>
+
+
+                                <div class="px-6 py-2 mt-auto">
+                                    <p class="text-xs text-gray-500">{{ $task->updated_at->diffForHumans() }}</p>
+                                </div>
+
+                                <div class="px-6 py-2 mt-auto">
+                                    <p class="text-xs text-gray-500">Status:{{ $title->status }}</p>
+                                </div>
                             @endforeach
+
                         </div>
-                        <div class="px-6 py-2 mt-auto">
-                            <p class="text-xs text-gray-500">{{ $task->updated_at->diffForHumans() }}</p>
-                        </div>
-                        @foreach ($task->titles as $title)
-                            <div class="px-6 py-2 mt-auto">
-                                <p class="text-xs text-gray-500">Status:{{ $title->status }}</p>
-                            </div>
-                        @endforeach
 
                     </div>
-
                 @empty
                     <p class="text-lg text-yellow-600">No tasks found</p>
                 @endforelse
@@ -114,8 +134,55 @@
             <div class=" px-4 py-6 flex items-center justify-between border-t border-gray-200 sm:px-6">
                 {{ $tasks->links() }}
             </div>
-
+            <h4 id="Content"></h4>
         </div>
+
+        <script>
+            // CSRF token setup for AJAX requests
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            var $noteContainer = $('#note-container');
+            $('#search').on('keyup', function() {
+                // alert('working done');
+                $value = $(this).val();
+                $.ajax({
+                    type: 'post',
+                    url: '{{ route('search-filter') }}',
+                    data: {
+                        'search': $value
+                    },
+
+                    success: function(data) {
+                        let result = '';
+                        data.forEach(tasks => {
+                            result += `<div class="flex flex-col bg-white border border-gray-200 rounded-lg shadow-sm">
+                            <div class="px-6 py-4">
+                                <div class="flex items-center justify-between mb-2 ">
+                                    <h2 class="text-lg font-semibold text-blue-800 hover:underline ">
+                                        <a href="{{ route('admin-show', ['id' => $task->id]) }}"
+                                            class="text-lg font-semibold text-blue-500 flex gap-2">
+                                            Task:
+                                            <pre>' ${tasks.task} '</pre>
+                                        </a>
+                                    </h2>
+                                </div>
+                            </div>
+                        </div>`;
+                        });
+
+                        $noteContainer.html(result);
+                    }
+                });
+
+
+
+
+            })
+        </script>
 </body>
 
 </html>
