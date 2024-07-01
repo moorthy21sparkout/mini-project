@@ -1,14 +1,13 @@
 <x-admin-layout>
-    @if (session('success'))
-        <x-alert-success>
-            {{ session('success') }}
-        </x-alert-success>
-    @endif
-    @if (session('error'))
-        <x-alert-error>
-            {{ session('error') }}
-        </x-alert-error>
-    @endif
+
+    <x-alert-success>
+        {{ session('success') }}
+    </x-alert-success>
+
+    <x-alert-error>
+        {{ session('error') }}
+    </x-alert-error>
+
 
     <div class="container mx-auto px-4">
         <div class="py-8">
@@ -43,8 +42,8 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach ($productRequests as $productRequest)
                                     <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $productRequest->product_name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap">{{ $productRequest->product_price }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $productRequest->product }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">{{ $productRequest->price }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $productRequest->user->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <form

@@ -24,8 +24,10 @@
                             class="block py-2 px-4 rounded hover:bg-gray-700">Products</a>
                     </li>
                     <li class="mb-2">
-                        <a href="{{ route('admin.product.requests') }}"
-                            class="block py-2 px-4 rounded hover:bg-gray-700">Approval for Products</a>
+                        <a href="{{ URL('/admin/product-requests/{admin}') }}"
+                            class="block py-2 px-4 rounded hover:bg-gray-700">
+                            Approval for Product
+                        </a>
                     </li>
 
                 </ul>
@@ -54,3 +56,4 @@
 </body>
 
 </html>
+{{-- {{ route('admin-product-requests') }} --}}

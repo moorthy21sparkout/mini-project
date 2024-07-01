@@ -24,8 +24,9 @@ class CustomProductRequest extends FormRequest
     public function rules()
     {
         return [
-            'product' => 'required|string|max:255',
-            'price' => 'required|numeric',
+            'customer_name' => 'required|string|max:255',
+            'customer_phonenumber' => 'required|string|max:10',
+            'overall_total' => 'required|numeric',
         ];
     }
 }

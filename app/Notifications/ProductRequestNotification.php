@@ -50,8 +50,8 @@ class ProductRequestNotification extends Notification
 
         return (new MailMessage)
             ->line('A new product request has been made.')
-            ->action('View Product Request',  route('admin-product-requests', ['admin' => $this->productRequest->id])) 
-            ->line('Thank you for using our application!'); 
+            ->action('View Product Request', route('admin-product-requests', ['admin' => $this->productRequest->id]))
+            ->line('Thank you for using our application!');
     }
 
     /**

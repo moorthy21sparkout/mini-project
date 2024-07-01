@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('admin',ProductController::class);
+Route::get('/admin/product-requests/{admin}', [ProductController::class, 'listProductRequests'])->name('admin-product-requests');
 Route::post('/admin/product-requests/{id}/approve', [ProductController::class, 'approveProductRequest'])->name('admin-product-request-approve');
 Route::post('/admin/product-requests/{id}/reject', [ProductController::class, 'rejectProductRequest'])->name('admin-product-request-reject');
 
@@ -39,8 +40,10 @@ Route::post('/admin/product-requests/{id}/reject', [ProductController::class, 'r
 Route::get('user_add',[UserController::class,'index'])->name('user-add');
 Route::post('user_store',[UserController::class,'store'])->name('user-store');
 Route::get('/customer-list', [UserController::class, 'list'])->name('customer-list');
+Route::get('/add-product', [UserController::class, 'showProductForm'])->name('add-product');
+Route::post('/add-product', [UserController::class, 'addProduct'])->name('add-product.store');
 Route::get('/user/add-product', [UserController::class, 'showProductRequestForm'])->name('user.product.request.form');
-Route::post('/user/add-product', [UserController::class, 'handleProductRequest'])->name('user.product.request');
+Route::post('/user/add-product', [UserController::class, 'handleProductRequest'])->name('user-product-request');
 
 
 require __DIR__.'/auth.php';
