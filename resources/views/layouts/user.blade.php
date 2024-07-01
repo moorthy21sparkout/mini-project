@@ -18,13 +18,16 @@
             <nav>
                 <ul>
                     <li class="mb-2">
-                        <a href="{{route('user-add')}}" class="block py-2 px-4 rounded hover:bg-gray-700">product</a>
+                        <a href="{{ route('customer-list') }}"
+                            class="block py-2 px-4 rounded hover:bg-gray-700">Customer List</a>
                     </li>
                     <li class="mb-2">
-                        <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700">Products</a>
+                        <a href="{{ route('user-add') }}" class="block py-2 px-4 rounded hover:bg-gray-700">Product</a>
                     </li>
+
                     <li class="mb-2">
-                        <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700"></a>
+                        <a href="{{ route('add-product') }}" class="block py-2 px-4 rounded hover:bg-gray-700">Add
+                            Product</a>
                     </li>
                     <li class="mb-2">
                         <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700"></a>

@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomProductRequest;
 use App\Models\Product;
+use App\Models\ProductRequest;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -14,9 +16,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        
-        $products=Product::all();
-        return view('admin.product-index',compact('products'));
+
+        $products = Product::all();
+        return view('admin.product-index', compact('products'));
     }
 
     /**
@@ -35,12 +37,9 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {   
-       $product= $request->validate([
-            'product' => 'required|string|max:255',
-            'price' => 'required|numeric',
-        ]);
+    public function store(CustomProductRequest $request)
+    {
+        $product = $request->validated();
 
         $product = Product::create($product);
 
@@ -54,8 +53,8 @@ class ProductController extends Controller
      */
     public function edit($id)
     {
-        $product=Product::find($id);
-        return view ('admin.admin-edit',compact('product'));
+        $product = Product::find($id);
+        return view('admin.admin-edit', compact('product'));
     }
 
     /**
@@ -65,15 +64,12 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CustomProductRequest $request, $id)
     {
-        $getProduct=Product::find($id);
-        $product= $request->validate([
-            'product' => 'required|string|max:255',
-            'price' => 'required|numeric',
-        ]);
+        $getProduct = Product::find($id);
+        $product = $request->validated();
 
-       $getProduct->update($product);
+        $getProduct->update($product);
 
         return redirect()->route('admin.index')->with('success', 'Product Update successfully.');
     }
@@ -86,9 +82,47 @@ class ProductController extends Controller
      */
     public function destroy($id)
     {
-        $product=Product::find($id);   
+        $product = Product::find($id);
         $product->delete();
         return redirect()->route('admin.index')->with('success', 'Product deteted successfully.');
+    }
+    public function listProductRequests()
+    {
+        $productRequests = ProductRequest::all();
+        return view('admin.product-request', ['productRequests' => $productRequests]);
+    }
 
+    public function approveProductRequest($id)
+    {
+        $productRequest = ProductRequest::find($id);
+
+        if (!$productRequest) {
+            return redirect()->route('admin-product-requests')->with('error', 'Product request not found.');
+        }
+
+        // Create a new Product instance
+        $product = new Product();
+        $product->product = $productRequest->product_name;
+        $product->price = $productRequest->product_price;
+        $product->save();
+
+        // Delete the product request after approval
+        $productRequest->delete();
+
+        return redirect()->route('admin-product-requests')->with('success', 'Product request approved and added successfully.');
+    }
+
+    public function rejectProductRequest($id)
+    {
+        $productRequest = ProductRequest::find($id);
+
+        if (!$productRequest) {
+            return redirect()->route('admin-product-requests')->with('error', 'Product request not found.');
+        }
+
+        // Delete the product request after rejection
+        $productRequest->delete();
+
+        return redirect()->route('admin-product-requests')->with('success', 'Product request rejected and removed successfully.');
     }
 }

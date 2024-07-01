@@ -113,7 +113,7 @@
                     </div>
                     <div class="flex justify-end">
                         <label for="gst" class="block">GST (%)</label>
-                        <input type="number" id="gst" name="gst" value="5"
+                        <input type="number" id="gst" name="gst" value="5" readonly
                             class="form-input mt-1 block w-24 border-gray-300 rounded-md shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-300 focus:ring-opacity-50"
                             placeholder="GST (%)">
                     </div>
@@ -266,7 +266,7 @@
                 }
                 var finalTotal = grandTotal;
                 $('#currectTotal').val(finalTotal.toFixed(2));
-                var finalTotal = grandTotal - (grandTotal * (discount / 100));
+                var finalTotal = grandTotal - (grandTotal/100 * (discount));
                 $('#finalTotal').val(finalTotal.toFixed(2));
             }
 

@@ -9,28 +9,30 @@ class CustomerProduct extends Model
 {
     use HasFactory;
     protected $fillable=[
-        'user_id',
+       'user_id',
         'receipt_no',
         'customer_name',
         'customer_phonenumber',
-        'product_name',
-        'price',
-        'quantity',
-        'item_total',
+        'ordered_products',
         'overall_total',
     ];
-    public static function boot()
+
+    public function user()
     {
-        
+        return $this->belongsTo(User::class);
+    }
+
+    protected static function boot()
+    {
         parent::boot();
 
-        static::creating(function($product){
-            $product->receipt_no=static::generateOrderNumber();
+        static::creating(function ($product) {
+            $product->receipt_no = static::generateOrderNumber();
         });
     }
 
     public static function generateOrderNumber()
     {
-        return 'RCP'.date('ymd').mt_rand(1000,9999);
+        return 'RCP' . date('ymd') . mt_rand(1000, 9999);
     }
 }

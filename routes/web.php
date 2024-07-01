@@ -32,9 +32,15 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('admin',ProductController::class);
+Route::post('/admin/product-requests/{id}/approve', [ProductController::class, 'approveProductRequest'])->name('admin-product-request-approve');
+Route::post('/admin/product-requests/{id}/reject', [ProductController::class, 'rejectProductRequest'])->name('admin-product-request-reject');
+
 
 Route::get('user_add',[UserController::class,'index'])->name('user-add');
 Route::post('user_store',[UserController::class,'store'])->name('user-store');
+Route::get('/customer-list', [UserController::class, 'list'])->name('customer-list');
+Route::get('/user/add-product', [UserController::class, 'showProductRequestForm'])->name('user.product.request.form');
+Route::post('/user/add-product', [UserController::class, 'handleProductRequest'])->name('user.product.request');
 
 
 require __DIR__.'/auth.php';

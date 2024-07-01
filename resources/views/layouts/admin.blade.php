@@ -20,17 +20,14 @@
                         <a href="/home" class="block py-2 px-4 rounded hover:bg-gray-700">Dashboard</a>
                     </li>
                     <li class="mb-2">
-                        <a href="{{route('admin.index')}}" class="block py-2 px-4 rounded hover:bg-gray-700">Products</a>
+                        <a href="{{ route('admin.index') }}"
+                            class="block py-2 px-4 rounded hover:bg-gray-700">Products</a>
                     </li>
                     <li class="mb-2">
-                        <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700">Approval for Producting</a>
+                        <a href="{{ route('admin.product.requests') }}"
+                            class="block py-2 px-4 rounded hover:bg-gray-700">Approval for Products</a>
                     </li>
-                    <li class="mb-2">
-                        <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700">Emergency Product Show</a>
-                    </li>
-                    <li class="mb-2">
-                        <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700">Notification</a>
-                    </li>
+
                 </ul>
             </nav>
         </div>
