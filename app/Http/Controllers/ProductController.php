@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomProductRequest;
+use App\Http\Requests\ProductListRequest;
 use App\Models\Product;
 use App\Models\ProductRequest;
 use Illuminate\Http\Request;
@@ -38,13 +39,12 @@ class ProductController extends Controller
      * @param  \App\Http\Requests\CustomProductRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CustomProductRequest $request)
+    public function store(ProductListRequest $request)
     {
-        // Validate the request and create a new product
         $product = $request->validated();
-        Product::create($product);
 
-        // Redirect to the product index page with a success message
+        $product = Product::create($product);
+
         return redirect()->route('admin.index')->with('success', 'Product created successfully.');
     }
 
@@ -68,17 +68,14 @@ class ProductController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(CustomProductRequest $request, $id)
+    public function update(ProductListRequest $request, $id)
     {
-        // Find the product by ID, validate the request, and update the product
         $getProduct = Product::find($id);
-        $product = $request->validated();
+        $product = $request->validate();
         $getProduct->update($product);
 
-        // Redirect to the product index page with a success message
-        return redirect()->route('admin.index')->with('success', 'Product updated successfully.');
+        return redirect()->route('admin.index')->with('success', 'Product Update successfully.');
     }
-
     /**
      * Remove the specified resource from storage.
      *

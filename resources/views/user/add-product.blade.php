@@ -270,17 +270,20 @@
 
             function calculateFinalTotal() {
                 var grandTotal = parseFloat($('#grandTotal').val());
-                console.log('the grand total:',grandTotal );
+                console.log('the grand total:', grandTotal);
                 var discount = parseFloat($('#discount').val());
                 if (isNaN(discount)) {
                     discount = 0;
                 }
                 var gstRate = 0.05; // GST rate in percentage
+                var finalTotal = grandTotal;
                 var gstAmount = (grandTotal * gstRate);
                 console.log("GST Amount:", gstAmount);
                 var grandTotal = grandTotal + gstAmount;
-                console.log("Grand Total with GST:" ,grandTotal);
-                var finalTotal = grandTotal;
+                console.log("Grand Total with GST:", grandTotal);
+                
+                console.log('Grand Total with GST:', grandTotal);
+                
                 $('#currectTotal').val(finalTotal.toFixed(2));
                 var finalTotal = grandTotal - (grandTotal * (discount / 100));
                 console.log("Final Total:", finalTotal);
