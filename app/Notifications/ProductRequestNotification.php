@@ -48,10 +48,20 @@ class ProductRequestNotification extends Notification
     public function toMail($notifiable)
     {
 
-        return (new MailMessage)
+        $message = (new MailMessage)
+            ->subject('New Product Request')
             ->line('A new product request has been made.')
-            ->action('View Product Request', route('admin-product-requests', ['admin' => $this->productRequest->id]))
-            ->line('Thank you for using our application!');
+            ->line('Product: ' . $this->productRequest->product)
+            ->line('Price: ' . $this->productRequest->price);
+
+        if ($this->productRequest->emergency) {
+            $message->line('**This is an emergency request!**');
+        }
+
+        $message->action('View Product Request', route('admin-product-requests', ['admin' => $this->productRequest->id]))
+                ->line('Thank you for using our application!');
+
+        return $message;
     }
 
     /**
@@ -63,9 +73,7 @@ class ProductRequestNotification extends Notification
     public function toArray($notifiable)
     {
         return [
-            'product_request_id' => $this->productRequest->id,
-            'product_name' => $this->productRequest->product_name,
-            'product_price' => $this->productRequest->product_price,
+           
         ];
     }
 }

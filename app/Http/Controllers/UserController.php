@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomProductRequest;
+use App\Jobs\SendProductRequestNotification;
 use App\Models\CustomerProduct;
 use App\Models\Discount;
 use App\Models\Product;
@@ -45,10 +46,9 @@ class UserController extends Controller
         $customerProduct->customer_phonenumber = $validatedData['customer_phonenumber'];
         $customerProduct->ordered_products = json_encode($request->input('productlists'));
         $customerProduct->overall_total = $validatedData['overall_total'];
-
         // Save the customer product
         $customerProduct->save();
-
+        // dd($customerProduct);
         // Redirect to the add-product route with a success message
         return redirect()->route('user-add')->with('success', 'Customer product added successfully.');
     }
@@ -61,7 +61,6 @@ class UserController extends Controller
      */
     public function discounts($grandTotal)
     {
-        // Find the discount that applies to the grand total
         $discount = Discount::where('price', '<=', $grandTotal)->orderBy('price', 'desc')->first();
 
         // Set discount value to 0 if no discount found
@@ -96,7 +95,7 @@ class UserController extends Controller
     {
         // Validate the incoming request
         $validatedData = $request->validate([
-            'product_name' => 'required|string|max:255',
+            'product_name' => 'required|string|max:10',
             'product_price' => 'required|numeric',
         ]);
 
@@ -105,10 +104,10 @@ class UserController extends Controller
         $product->product = $validatedData['product_name'];
         $product->price = $validatedData['product_price'];
 
-       
+
         $product->save();
 
-       
+
         return redirect()->route('add-product')->with('success', 'Product added successfully.');
     }
 
@@ -151,22 +150,23 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'product_name' => 'required|string|max:255',
             'product_price' => 'required|numeric|min:0',
+
         ]);
 
-       
+
         $productRequest = new ProductRequest();
         $productRequest->user_id = Auth::id();
         $productRequest->product = $validatedData['product_name'];
         $productRequest->price = $validatedData['product_price'];
+        $productRequest->emergency = $request->has('emergency') ? 1 : 0;
         $productRequest->save();
 
         // Notify  admin users about the new product request
-        $adminUsers = User::where('usertype', 'admin')->get();
-        foreach ($adminUsers as $adminUser) {
-            $adminUser->notify(new ProductRequestNotification($productRequest));
-        }
 
-      
+        dispatch(new SendProductRequestNotification($productRequest));
+
+
+
         return redirect()->back()->with('success', 'Product request submitted successfully.');
     }
 }

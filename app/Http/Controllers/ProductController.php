@@ -121,7 +121,7 @@ class ProductController extends Controller
 
         if (!$productRequest) {
             // If the product request is not found, return the view with an error message
-            return view('admin.product-request', ['productRequests' => ProductRequest::all()])
+            return view('admin.product-request')
                 ->with('error', 'Product request not found.');
         }
 
@@ -135,7 +135,7 @@ class ProductController extends Controller
         $productRequest->delete();
 
         // Return the view with a success message
-        return view('admin.product-request', ['productRequests' => ProductRequest::all()])
+        return view('admin.product-request')
             ->with('success', 'Product request approved and added successfully.');
     }
 
@@ -152,7 +152,7 @@ class ProductController extends Controller
 
         if (!$productRequest) {
             // If the product request is not found, return the view with an error message
-            return view('admin.product-request', ['productRequests' => ProductRequest::all()])
+            return view('admin.product-request')
                 ->with('error', 'Product request not found.');
         }
 
@@ -160,7 +160,7 @@ class ProductController extends Controller
         $productRequest->delete();
 
         // Return the view with a success message
-        return view('admin.product-request', ['productRequests' => ProductRequest::all()])
+        return view('admin.product-request')
             ->with('success', 'Product request rejected and removed successfully.');
     }
 }

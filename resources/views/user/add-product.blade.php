@@ -12,12 +12,18 @@
                     <input type="text" id="customer_name" name="customer_name"
                         class="form-input mt-1 block border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                         placeholder="Enter customer name" required>
+                    @error('customer_name')
+                        <p class="text-red-500">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div class="mb-4">
                     <label for="phone_number" class="block">Phone Number</label>
                     <input type="text" id="phone_number" name="customer_phonenumber"
                         class="form-input mt-1 block border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
                         placeholder="Enter phone number" required>
+                    @error('customer_phonenumber')
+                        <p class="text-red-500 ">{{ $message }}</p>
+                    @enderror
                 </div>
                 <div id="addProductForm" class="space-y-4">
                     <div class="flex flex-col space-y-2">
@@ -88,7 +94,7 @@
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Total
                                     </th>
-                                    
+
                                     <th scope="col" class="px-6 py-3">
                                         <span class="sr-only">Remove</span>
                                     </th>
@@ -100,40 +106,45 @@
                         </table>
                     </div>
                 </div>
-                <div class="mt-8 flex justify-end">
-                    <h3 class="font-bold mb-4 mr-4">Currect Total</h3>
-                    <input type="number" id="currectTotal" name="currentTotal" readonly
-                        class="form-input mt-1 block w-32 border-gray-300 rounded-md shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+                <div class="container mx-auto">
+                    <div class="p-8 bg-white shadow-md rounded-lg">
+
+                        <div class="mt-8 flex justify-end items-center">
+                            <h3 class="font-bold mb-4 mr-4">Current Total</h3>
+                            <input type="number" id="currectTotal" name="currentTotal" readonly
+                                class="form-input w-32 border-gray-300 rounded-md shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+                        </div>
+
+                        <div class="mt-8 flex justify-end items-center">
+                            <div class="mr-4">
+                                <label for="discount" class="block font-bold">Discount (%)</label>
+                                <input type="number" id="discount" name="discount" readonly
+                                    class="form-input w-24 border-gray-300 rounded-md shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+                            </div>
+                            <div>
+                                <label for="gst" class="block font-bold">GST (%)</label>
+                                <input type="number" id="gst" name="gst" value="5" readonly
+                                    class="form-input w-24 border-gray-300 rounded-md shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+                            </div>
+                        </div>
+                        <div class="mt-8 flex justify-end items-center">
+                            <h3 class="font-bold mb-4 mr-4">Final Total</h3>
+                            <input type="number" id="finalTotal" name="overall_total" readonly
+                                class="form-input w-32 border-gray-300 rounded-md shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-300 focus:ring-opacity-50">
+                        </div>
+                    </div>
                 </div>
-                <div class="mt-8">
-                    <div class="flex justify-end items-center font-bold">
-                        <label for="discount" class="block mr-4">Discount (%)</label>
-                        <input type="number" id="discount" name="discount"  readonly
-                            class="form-input mt-1 block w-24 border-gray-300 rounded-md shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-300 focus:ring-opacity-50">
-                    </div>
-                    <div class="flex justify-end">
-                        <label for="gst" class="block">GST (%)</label>
-                        <input type="number" id="gst" name="gst" value="5" readonly
-                            class="form-input mt-1 block w-24 border-gray-300 rounded-md shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-300 focus:ring-opacity-50"
-                            placeholder="GST (%)">
-                    </div>
-                    <div class="mt-8 flex justify-end">
-                        <h3 class="font-bold mb-4 mr-4">Final Total</h3>
-                        <input type="number" id="finalTotal" name="overall_total" readonly
-                            class="form-input mt-1 block w-32 border-gray-300 rounded-md shadow-sm focus:border-gray-300 focus:ring focus:ring-gray-300 focus:ring-opacity-50">
-                    </div>
+                <input type="hidden" name="productlists" id="product-list-items">
 
-                    <input type="hidden" name="productlists" id="product-list-items">
-
-                    <div class="mt-8 flex justify-end">
-                        <button type="submit"
-                            class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
-                            Submit
-                        </button>
-                    </div>
+                <div class="mt-8 flex justify-end">
+                    <button type="submit"
+                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                        Submit
+                    </button>
                 </div>
             </div>
-            <input type="hidden" id="grandTotal" name="grandTotal">
+        </div>
+        <input type="hidden" id="grandTotal" name="grandTotal">
     </form>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -170,7 +181,7 @@
                 }
             }
 
-            function addProduct(productId, productName, productPrice, quantity,currentTotal) {
+            function addProduct(productId, productName, productPrice, quantity, total, currentTotal) {
                 var existingProduct = productItems.find(function(item) {
                     return item.productId === productId;
                 });
@@ -185,7 +196,7 @@
                         productPrice: productPrice,
                         quantity: quantity,
                         total: total,
-                        currentTotal:currentTotal
+                        currentTotal: currentTotal
                     });
 
                     const element = document.getElementById("product-list-items");
@@ -207,10 +218,10 @@
                 $('#productItems').empty();
 
                 productItems.forEach(function(item) {
-                    var row = `<tr>
-                        <td  class="px-6 py-4 whitespace-nowrap">${item.productName}</td>
-                        <td  class="px-6 py-4 whitespace-nowrap">${item.productPrice.toFixed(2)}</td>
-                        <td  class="px-6 py-4 whitespace-nowrap">${item.quantity}</td>
+                    var row = `<tr>                                                                                                                                                                                                                                                                                 
+                        <td  class="px-6 py-4 whitespace-nowrap">${item.productName}</td>                                                                                                                                                                                                                                                                                   
+                        <td  class="px-6 py-4 whitespace-nowrap">${item.productPrice.toFixed(2)}</td>                                                                                                                                                                                                                                                                                   
+                        <td  class="px-6 py-4 whitespace-nowrap">${item.quantity}</td>                                                                                                                                                                                                                                                                                  
                         <td  class="px-6 py-4 whitespace-nowrap">${item.total.toFixed(2)}</td>
                         <td  class="px-6 py-4 whitespace-nowrap"><button type="button" class="text-red-600 hover:text-red-900" onclick="removeProductItems('${item.productId}')">Remove</button></td>
                     </tr>`;
@@ -239,16 +250,16 @@
                 var grandTotal = productItems.reduce((sum, item) => sum + item.total, 0);
 
                 $.ajax({
-                    url: `/discount/${grandTotal}`, // Pass grandTotal to the URL
+                    url: `/discount/${grandTotal}`,
                     type: 'GET',
                     success: function(data) {
-                        // console.log(data); // Handle the discount data here
+                        // console.log(data);
                         $('#discount').val(data
-                            .discount); 
-                        calculateFinalTotal(); 
+                            .discount);
+                        calculateFinalTotal();
                     },
                     error: function(xhr, status, error) {
-                        console.error(error); 
+                        console.error(error);
                     }
                 });
 
@@ -260,13 +271,18 @@
             function calculateFinalTotal() {
                 var grandTotal = parseFloat($('#grandTotal').val());
                 var discount = parseFloat($('#discount').val());
-
                 if (isNaN(discount)) {
                     discount = 0;
                 }
+                var gstRate = 0.05; // GST rate in percentage
+                var gstAmount = (grandTotal * gstRate);
+                console.log(gstAmount);
+                var grandTotal = grandTotal + gstAmount;
                 var finalTotal = grandTotal;
                 $('#currectTotal').val(finalTotal.toFixed(2));
-                var finalTotal = grandTotal - (grandTotal/100 * (discount));
+                var finalTotal = grandTotal - (grandTotal * (discount / 100));
+                console.log(finalTotal)
+
                 $('#finalTotal').val(finalTotal.toFixed(2));
             }
 

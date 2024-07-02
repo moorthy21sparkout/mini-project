@@ -3,7 +3,6 @@
         <thead>
             <tr>
                 <th class="px-4 py-2 border border-gray-200">Receipt No</th>
-                <th class="px-4 py-2 border border-gray-200">Date</th>
                 <th class="px-4 py-2 border border-gray-200">Customer Name</th>
                 <th class="px-4 py-2 border border-gray-200">Customer Phone Number</th>
                 <th class="px-4 py-2 border border-gray-200">Ordered Products</th>
@@ -14,7 +13,6 @@
             @foreach ($customerProducts as $customerProduct)
                 <tr>
                     <td class="px-4 py-2 border border-gray-200">{{ $customerProduct->receipt_no }}</td>
-                    <td class="px-4 py-2 border border-gray-200">{{ $customerProduct->created_at }}</td>
                     <td class="px-4 py-2 border border-gray-200">{{ $customerProduct->customer_name }}</td>
                     <td class="px-4 py-2 border border-gray-200">{{ $customerProduct->customer_phonenumber }}</td>
                     <td class="px-4 py-2 border border-gray-200">

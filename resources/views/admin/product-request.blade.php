@@ -35,16 +35,22 @@
                                     </th>
                                     <th scope="col"
                                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        Emergency
+                                    </th>
+                                    <th scope="col"
+                                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                         Actions
                                     </th>
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
                                 @foreach ($productRequests as $productRequest)
-                                    <tr>
+                                    <tr class="{{ $productRequest->emergency ? 'bg-red-600' : '' }}">
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $productRequest->product }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $productRequest->price }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">{{ $productRequest->user->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap">
+                                            {{ $productRequest->emergency ? 'Yes' : 'No' }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap">
                                             <form
                                                 action="{{ route('admin-product-request-approve', ['id' => $productRequest->id]) }}"

@@ -39,6 +39,7 @@ Route::post('/admin/product-requests/{id}/reject', [ProductController::class, 'r
 
 Route::get('user_add',[UserController::class,'index'])->name('user-add');
 Route::post('user_store',[UserController::class,'store'])->name('user-store');
+Route::get('/discount/{grandTotal}', [UserController::class, 'discounts']);
 Route::get('/customer-list', [UserController::class, 'list'])->name('customer-list');
 Route::get('/add-product', [UserController::class, 'showProductForm'])->name('add-product');
 Route::post('/add-product', [UserController::class, 'addProduct'])->name('add-product.store');

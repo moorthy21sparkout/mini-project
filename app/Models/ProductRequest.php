@@ -11,7 +11,8 @@ class ProductRequest extends Model
     protected $fillable = [
         'user_id',
         'product',
-        'price'
+        'price',
+        'emergency'
     ];
     public function user()
     {
