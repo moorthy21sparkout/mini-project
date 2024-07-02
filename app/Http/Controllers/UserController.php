@@ -111,6 +111,18 @@ class UserController extends Controller
         return redirect()->route('add-product')->with('success', 'Product added successfully.');
     }
 
+
+
+    public function userProductRequestList()
+    {
+        $user = Auth::user();
+        $productRequests = ProductRequest::where('user_id', $user->id)->get();
+        $approvedRequests = ProductRequest::where('user_id', $user->id)->where('status', 'approved')->get();
+        $rejectedRequests = ProductRequest::where('user_id', $user->id)->where('status', 'rejected')->get();
+        $pendingRequests = ProductRequest::where('user_id', $user->id)->where('status', 'pending')->get();
+
+        return view('user.product-request-list', compact('productRequests', 'approvedRequests', 'rejectedRequests', 'pendingRequests'));
+    }
     /**
      * Display a listing of the customer products for the authenticated user.
      *

@@ -118,10 +118,10 @@ class ProductController extends Controller
     {
         // Find the product request by ID
         $productRequest = ProductRequest::find($id);
-
+        $productRequest->status = 'approved';
         if (!$productRequest) {
             // If the product request is not found, return the view with an error message
-            return view('admin.product-request')
+            return view('admin.product-request', ['productRequests' => ProductRequest::all()])
                 ->with('error', 'Product request not found.');
         }
 
@@ -135,7 +135,7 @@ class ProductController extends Controller
         $productRequest->delete();
 
         // Return the view with a success message
-        return view('admin.product-request')
+        return view('admin.product-request', ['productRequests' => ProductRequest::all()])
             ->with('success', 'Product request approved and added successfully.');
     }
 
@@ -149,10 +149,11 @@ class ProductController extends Controller
     {
         // Find the product request by ID
         $productRequest = ProductRequest::find($id);
+        $productRequest->status = 'Rejected';
 
         if (!$productRequest) {
             // If the product request is not found, return the view with an error message
-            return view('admin.product-request')
+            return view('admin.product-request', ['productRequests' => ProductRequest::all()])
                 ->with('error', 'Product request not found.');
         }
 
@@ -160,7 +161,7 @@ class ProductController extends Controller
         $productRequest->delete();
 
         // Return the view with a success message
-        return view('admin.product-request')
+        return view('admin.product-request', ['productRequests' => ProductRequest::all()])
             ->with('success', 'Product request rejected and removed successfully.');
     }
 }

@@ -30,7 +30,7 @@
                             Product</a>
                     </li>
                     <li class="mb-2">
-                        <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700"></a>
+                        <a href="{{route('user.product-request-list')}}" class="block py-2 px-4 rounded hover:bg-gray-700">Request List</a>
                     </li>
                     <li class="mb-2">
                         <a href="#" class="block py-2 px-4 rounded hover:bg-gray-700"> </a>

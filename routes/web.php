@@ -43,6 +43,7 @@ Route::get('/discount/{grandTotal}', [UserController::class, 'discounts']);
 Route::get('/customer-list', [UserController::class, 'list'])->name('customer-list');
 Route::get('/add-product', [UserController::class, 'showProductForm'])->name('add-product');
 Route::post('/add-product', [UserController::class, 'addProduct'])->name('add-product.store');
+Route::get('/user-product-requests', [UserController::class, 'userProductRequestList'])->name('user.product-request-list');
 Route::get('/user/add-product', [UserController::class, 'showProductRequestForm'])->name('user.product.request.form');
 Route::post('/user/add-product', [UserController::class, 'handleProductRequest'])->name('user-product-request');
 

@@ -12,7 +12,8 @@ class ProductRequest extends Model
         'user_id',
         'product',
         'price',
-        'emergency'
+        'emergency',
+        'status'
     ];
     public function user()
     {

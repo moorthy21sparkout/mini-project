@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('product'); 
             $table->float('price', 10, 2); 
             $table->boolean('emergency')->default(false);
+            $table->string('status')->default('pending');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();
         });
