@@ -22,7 +22,7 @@ class AdminController extends Controller
     public function index()
     {
         // Fetch all tasks
-        $tasks = Task::with('titles')->latest('updated_at')->paginate(8);
+        $tasks = Task::with('titles')->latest('updated_at')->paginate(4);
 
         // Pass tasks to the view
         return view('admin.admin-home', compact('tasks'));
